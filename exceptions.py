@@ -1,4 +1,4 @@
-class EnviromentTokenError(SystemExit):
+class EnviromentTokenError(Exception):
     """Отсутствие обязательных переменных окружения во время запуска бота."""
 
 
