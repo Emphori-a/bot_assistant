@@ -156,9 +156,8 @@ def main():
 
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
-
-    homeworks = {}
     error_message = None
+
     while True:
         try:
             response = get_api_answer(timestamp)
@@ -169,20 +168,15 @@ def main():
                     'статус работ не изменился.'
                 )
             else:
-                for hw in response.get('homeworks'):
-                    message = parse_status(hw)
-                    if (
-                        hw.get('homework_name') not in homeworks
-                        or hw.get('status') != homeworks['homework_name']
-                    ):
-                        homeworks[hw['homework_name']] = hw['status']
-                        send_message(bot, message)
+                message = parse_status(response.get('homeworks')[0])
+                send_message(bot, message)
+                error_message = message
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logger.error(error_message, exc_info=True)
-            if not error_message or error_message != message:
+            if error_message != message:
                 error_message = message
-            send_message(bot, error_message)
+                send_message(bot, error_message)
         else:
             timestamp = response.get('current_date')
         finally:
