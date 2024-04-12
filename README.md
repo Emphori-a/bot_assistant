@@ -14,5 +14,6 @@
 
 ### Использованные технологии:
 
-Python 3.9.10
+Python 3.9.10  
+
 python-telegram-bot==13.7
